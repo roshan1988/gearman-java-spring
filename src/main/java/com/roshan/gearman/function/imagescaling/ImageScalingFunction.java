@@ -19,7 +19,14 @@ public class ImageScalingFunction extends AbstractGearmanFunction<ImageScaleJobI
 	@Override
 	public DefaultGearmanJobResult doWork(String function, ImageScaleJobInput imageScaleJobInput,
 			GearmanFunctionCallback callback) {
-		// TODO Scale the image
+		// TODO Actual logic for scaling the image
+		// TODO Remove the sleep(). Included here to mimic the image scaling
+		// operation
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

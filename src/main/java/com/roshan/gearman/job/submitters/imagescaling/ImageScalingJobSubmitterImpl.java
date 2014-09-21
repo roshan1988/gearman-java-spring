@@ -12,7 +12,7 @@ import com.roshan.gearman.utils.GearmanUtils;
  *
  */
 public class ImageScalingJobSubmitterImpl extends AbstractJobSubmitter<ImageScaleJobInput, DefaultGearmanJobResult>
-		implements ImageScalingJobSubmitter {
+implements ImageScalingJobSubmitter {
 
 	/**
 	 * @param jobResultClassType
@@ -48,7 +48,8 @@ public class ImageScalingJobSubmitterImpl extends AbstractJobSubmitter<ImageScal
 	 * @param e
 	 */
 	private void setStatusSubmitFailed(String imageUrl, Exception e) {
-		// TODO Set the submit status as failed
+		// TODO Set the submit status as failed either in DB or log the
+		// exception
 	}
 
 }

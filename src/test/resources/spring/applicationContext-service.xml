@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+	default-init-method="init">
+
+	<!-- Gearman related beans -->
+
+	<bean id="gearman" class="com.roshan.gearman.GearmanFactory" />
+
+	<bean id="gearmanService" abstract="true">
+		<property name="gearman" ref="gearman" />
+	</bean>
+	
+	<!-- define all of the worker's servers -->
+	<bean id="gearmanServers" class="com.roshan.gearman.GearmanServerArrayFactory"
+		parent="gearmanService">
+		<property name="servers" value="${com.roshan.gearman.servers}" />
+	</bean>
+	
+	<!-- Gearman Functions -->
+	<bean id="imageScalingFunction"
+		class="com.roshan.gearman.function.imagescaling.ImageScalingFunction">
+		<property name="imageScaleService" ref="imageScaleService"/>
+	</bean>
+
+	<!-- Gearman function mapper -->
+	<bean id="gearmanFunctionMapper"
+		class="com.roshan.gearman.function.mapper.GearmanFunctionMapperImpl">
+		<!-- Add the map for all the function beans -->
+		<property name="functionMapper">
+        <map>
+           <entry key="${com.roshan.gearman.functions.scaleimage}" value-ref="imageScalingFunction"/>
+        </map>
+      </property>
+	</bean>
+
+	<!-- Gearman Client -->
+	<bean id="gearmanClient" class="com.roshan.gearman.GearmanClientFactory"
+		parent="gearmanService">
+		<property name="gearmanServers" ref="gearmanServers" />
+	</bean>
+
+	<!-- Gearman Job submitters -->
+
+	<bean id="abstractJobSubmitter" abstract="true">
+		<property name="gearmanEnabled" value="${com.roshan.gearman.enabled}" />
+		<property name="gearmanClient" ref="gearmanClient" />
+		<property name="gearmanFunctionMapper" ref="gearmanFunctionMapper" />
+	</bean>
+
+	<bean id="imageScalingJobSubmitter"
+		class="com.roshan.gearman.job.submitters.imagescaling.ImageScalingJobSubmitterImpl"
+		parent="abstractJobSubmitter">
+		<property name="functionName" value="${com.roshan.gearman.functions.scaleimage}" />
+	</bean>
+
+	<!-- ============================================== -->
+
+</beans>

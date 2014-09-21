@@ -24,6 +24,7 @@ public class ImageScalingFunction extends AbstractGearmanFunction<ImageScaleJobI
 		// operation
 		try {
 			Thread.sleep(5000);
+			System.out.println("Doing image scaling foe image at url : " + imageScaleJobInput.getImageUrl());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

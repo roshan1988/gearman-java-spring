@@ -24,6 +24,7 @@ public class WebCrawlingFunction extends AbstractGearmanFunction<WebCrawlingJobI
 		// crawling function
 		try {
 			Thread.sleep(5000);
+			System.out.println("Doing web crawling for url : " + jobInput.getWebUrl());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
